@@ -1,0 +1,27 @@
+---
+const images = [
+  '/images/project1.jpg',
+  '/images/project2.jpg',
+  '/images/project3.jpg'
+];
+const slideCount = images.length;
+---
+
+<div class="relative w-full overflow-hidden rounded-2xl shadow-lg">
+  <div id="carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%)">
+    {images.map((src) => (
+      <img src={src} alt="TechStack" class="w-full shrink-0 object-cover h-64 md:h-80" loading="lazy" />
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  const carousel = document.getElementById('carousel');
+  const slideCount = {slideCount}; // 👈 Inject server value into JS
+  let index = 0;
+
+  setInterval(() => {
+    index = (index + 1) % slideCount;
+    carousel.style.transform = `translateX(-${index * 100}%)`;
+  }, 3000);
+</script>

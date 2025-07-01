@@ -1,0 +1,23 @@
+---
+interface Post {
+  title: string
+  description: string
+  pubDate: string
+  author: string
+  slug: string
+}
+
+const { posts = [] }: { posts?: Post[] } = Astro.props;
+---
+
+<section class="min-h-screen">
+  <h1>My Blog</h1>
+  <ul>
+    {posts.map(post => (
+      <li>
+        <a href={`/blog/${post.slug}`}>{post.title}</a>
+        <p>{post.description}</p>
+      </li>
+    ))}
+  </ul>
+</section>
