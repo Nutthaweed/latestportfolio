@@ -1,0 +1,30 @@
+---
+const username = "Nutthaweed"; // ⬅️ change this to your GitHub username
+
+// Fetch live data from GitHub API
+const res = await fetch(`https://api.github.com/users/${username}`);
+const user = await res.json();
+---
+
+<section class="flex justify-center items-center py-12 px-4">
+  <div
+    class="flex flex-wrap justify-center gap-8 bg-(--color-bg) text-(--color-text)
+           px-8 py-6 rounded-2xl shadow-lg border border-(--color-accent)/40
+           transition-all duration-500 w-full max-w-4xl"
+  >
+    <div class="text-center flex-1 min-w-[120px]">
+      <p class="text-3xl md:text-4xl font-bold text-(--color-accent)">{user.public_repos}</p>
+      <p class="text-sm md:text-base opacity-80">Repositories</p>
+    </div>
+
+    <div class="text-center flex-1 min-w-[120px]">
+      <p class="text-3xl md:text-4xl font-bold text-(--color-accent)">{user.followers}</p>
+      <p class="text-sm md:text-base opacity-80">Followers</p>
+    </div>
+
+    <div class="text-center flex-1 min-w-[120px]">
+      <p class="text-3xl md:text-4xl font-bold text-(--color-accent)">{user.following}</p>
+      <p class="text-sm md:text-base opacity-80">Following</p>
+    </div>
+  </div>
+</section>

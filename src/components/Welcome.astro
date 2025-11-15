@@ -13,10 +13,10 @@ import NavBar from "./Navbar.astro"
 <section class="py-16 px-6 md:px-16 flex flex-col md:flex-row justify-center md:justify-between items-center gap-12">
   <!-- Left: Typing -->
   <div class="w-full md:w-1/2 text-center md:text-left">
-    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800">
-      <span id="typewriter"></span>
-      <span class="border-r-2 border-black animate-blink ml-1"></span>
-    </h1>
+    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-(--color-text)">
+  <span id="typewriter"></span>
+  <span class="border-r-2 border-(--color-text) animate-blink ml-1"></span>
+</h1>
     <p class="text-xl sm:text-2xl pt-8">I live in Thailand, I educate at KMUTNB (King Mongkut's University of North Bangkok).</p>
     <p class="text-xl sm:text-2xl pt-3">I am a Full-stack Developer, I made many projects and collaborated with other countries.</p>
     <p class="text-xl sm:text-2xl pt-3">I hope visitors enjoy my site!</p>
@@ -24,8 +24,8 @@ import NavBar from "./Navbar.astro"
 
   <!-- Right: Model -->
   <div class="w-full md:w-1/2 flex justify-center">
-    <div id="threejs-container" class="w-[80vw] max-w-[400px] aspect-square"></div>
-  </div>
+  <div id="threejs-container" class="w-[90vw] md:w-[45vw] max-w-[700px] aspect-3/2"></div>
+</div>
 </section>
 
 
@@ -35,37 +35,23 @@ import NavBar from "./Navbar.astro"
 
 
 <style>
-  @keyframes blink {
-    0%, 100% {
-      border-color: black;
-    }
-    50% {
-      border-color: transparent;
-    }
-  }
-
-  .animate-blink {
-    animation: blink 1s step-end infinite;
-  }
-
-  @keyframes fade-in {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
-  .fade-in {
-    animation: fade-in 1s ease-in-out;
-  }
-
   #threejs-container {
-    width: 100%;
-    height: 60vh;
-  }
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 
-  canvas {
-    display: block;
-  }
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
 </style>
+
+
 
 
 

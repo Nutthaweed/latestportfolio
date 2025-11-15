@@ -1,27 +1,192 @@
 ---
-const images = [
-  '/images/project1.jpg',
-  '/images/project2.jpg',
-  '/images/project3.jpg'
+import { Image } from 'astro:assets';
+
+// ✅ Import logos
+import jsLogo from '../images/javascript-logo.png';
+import reactLogo from '../images/React-icon.png';
+import firebaseLogo from '../images/Firebase.png';
+import tsLogo from '../images/Typescript.png';
+import nextLogo from '../images/Nextjs.png';
+import flutterLogo from '../images/Flutter.png';
+import phpLogo from '../images/PHP.png';
+import HTMLLogo from '../images/HTML.png';
+import CSSLogo from '../images/CSS.png';
+import TailwindLogo from '../images/TailwindCSS.png';
+import SveltLogo from '../images/Svelte.png';
+import AstroLogo from '../images/astro.png';
+import PythonLogo from '../images/python.png';
+import PostGreSQLLogo from '../images/PostgreSQL.png';
+import MySQLLogo from '../images/MYSQL.png';
+import MongoDBLogo from '../images/mongoDB.png';
+import DockerLogo from '../images/Docker.png';
+import JenkinLogo from '../images/jenkin.png';
+
+const skills = [
+  { img: jsLogo, name: 'JavaScript', rating: 4.5, desc: 'Dynamic language used for web interactivity.' },
+  { img: reactLogo, name: 'React & React Native', rating: 4.3, desc: 'Modern library for building UI components.' },
+  { img: firebaseLogo, name: 'Firebase', rating: 4.0, desc: 'Backend platform for web and mobile apps.' },
+  { img: tsLogo, name: 'TypeScript', rating: 4.2, desc: 'Typed superset of JavaScript for scalability.' },
+  { img: nextLogo, name: 'Next.js', rating: 4.4, desc: 'React framework with SSR and API routes.' },
+  { img: flutterLogo, name: 'Flutter', rating: 4.1, desc: 'UI toolkit for building natively compiled apps.' },
+  { img: phpLogo, name: 'PHP', rating: 3.8, desc: 'Server-side scripting language for web.' },
+  { img: HTMLLogo, name: 'HTML', rating: 5.0, desc: 'Structure of every web page.' },
+  { img: CSSLogo, name: 'CSS', rating: 4.8, desc: 'Style language for web design.' },
+  { img: TailwindLogo, name: 'Tailwind CSS', rating: 4.7, desc: 'Utility-first CSS framework for rapid UI.' },
+  { img: SveltLogo, name: 'Svelte', rating: 4.0, desc: 'Reactive JS framework with compile-time magic.' },
+  { img: AstroLogo, name: 'Astro', rating: 4.5, desc: 'Modern static site builder focused on performance.' },
+  { img: PythonLogo, name: 'Python', rating: 4.6, desc: 'Versatile programming language for data and web.' },
+  { img: PostGreSQLLogo, name: 'PostgreSQL', rating: 4.3, desc: 'Advanced open-source relational database.' },
+  { img: MySQLLogo, name: 'MySQL', rating: 4.2, desc: 'Reliable relational database for web apps.' },
+  { img: MongoDBLogo, name: 'MongoDB', rating: 4.1, desc: 'NoSQL database for scalable apps.' },
+  { img: DockerLogo, name: 'Docker', rating: 4.0, desc: 'Containerization for consistent environments.' },
+  { img: JenkinLogo, name: 'Jenkins', rating: 3.9, desc: 'Automation server for CI/CD pipelines.' },
 ];
-const slideCount = images.length;
 ---
 
-<div class="relative w-full overflow-hidden rounded-2xl shadow-lg">
-  <div id="carousel" class="flex transition-transform duration-700 ease-in-out" style="transform: translateX(0%)">
-    {images.map((src) => (
-      <img src={src} alt="TechStack" class="w-full shrink-0 object-cover h-64 md:h-80" loading="lazy" />
+<!-- 🌐 Carousel Section -->
+<div class="relative overflow-hidden py-8 w-full">
+  <div id="carousel" class="flex gap-6 sm:gap-8 animate-scroll select-none">
+    {skills.concat(skills).map((skill, i) => (
+      <button
+        type="button"
+        class="shrink-0 flex justify-center items-center w-20 sm:w-28 md:w-36 lg:w-44 xl:w-52 p-2 sm:p-4 transition-transform hover:scale-105 focus:outline-none"
+        data-index={i}
+        data-name={skill.name}
+        data-desc={skill.desc}
+        data-rating={skill.rating}
+        data-img={skill.img.src}
+      >
+        <Image
+          src={skill.img}
+          alt={skill.name}
+          class="h-10 sm:h-14 md:h-20 lg:h-24 xl:h-28 object-contain"
+          loading="lazy"
+        />
+      </button>
     ))}
   </div>
 </div>
 
-<script is:inline>
-  const carousel = document.getElementById('carousel');
-  const slideCount = {slideCount}; // 👈 Inject server value into JS
-  let index = 0;
+<!-- 💬 Popout Modal -->
+<div
+  id="popoutOverlay"
+  class="fixed inset-0 flex items-center justify-center z-50 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+>
+  <div
+    id="popout"
+    class="rounded-2xl shadow-2xl p-6 max-w-sm w-[90%] sm:w-full text-center transform scale-95 opacity-0 transition-all duration-300
+           bg-(--color-bg) text-(--color-text) border border-gray-300 dark:border-white/20"
+  >
+    <img id="popoutImg" class="h-16 mx-auto mb-3" alt="" />
+    <h2 id="popoutTitle" class="text-xl font-bold mb-2"></h2>
+    <div id="popoutRating" class="text-yellow-400 mb-3 text-lg"></div>
+    <p id="popoutDesc" class="opacity-90 mb-4"></p>
+    <button
+      id="popoutClose"
+      class="px-4 py-2 rounded-xl bg-(--color-accent) text-white hover:opacity-90 transition"
+    >
+      Close
+    </button>
+  </div>
+</div>
 
-  setInterval(() => {
-    index = (index + 1) % slideCount;
-    carousel.style.transform = `translateX(-${index * 100}%)`;
-  }, 3000);
+<!-- 🧠 Script -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('#carousel button[data-index]');
+    const overlay = document.getElementById('popoutOverlay');
+    const popout = document.getElementById('popout');
+    const imgEl = document.getElementById('popoutImg');
+    const titleEl = document.getElementById('popoutTitle');
+    const descEl = document.getElementById('popoutDesc');
+    const ratingEl = document.getElementById('popoutRating');
+    const close = document.getElementById('popoutClose');
+
+    const showPopout = () => {
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      popout.classList.remove('scale-95', 'opacity-0');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const hidePopout = () => {
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      popout.classList.add('scale-95', 'opacity-0');
+      document.body.style.overflow = '';
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const imgSrc = btn.getAttribute('data-img');
+        const name = btn.getAttribute('data-name');
+        const desc = btn.getAttribute('data-desc');
+        const rating = Math.round(parseFloat(btn.getAttribute('data-rating')));
+
+        imgEl.src = imgSrc;
+        imgEl.alt = name;
+        titleEl.textContent = name;
+        descEl.textContent = desc;
+        ratingEl.textContent = '⭐'.repeat(rating);
+
+        showPopout();
+      });
+    });
+
+    close.addEventListener('click', hidePopout);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) hidePopout();
+    });
+  });
 </script>
+
+<style>
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll {
+  display: flex;
+  animation: scroll 25s linear infinite;
+  width: max-content;
+  will-change: transform;
+}
+html, body { overflow-x: hidden; }
+
+@media (max-width: 1024px) {
+  .animate-scroll { animation-duration: 35s; }
+}
+@media (max-width: 640px) {
+  .animate-scroll { animation-duration: 45s; }
+}
+
+/* Add smooth dark mode transition */
+/* 🧡 Modal Theme Support */
+#popout {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Force text elements inside modal to use theme text */
+#popout h2,
+#popout p,
+#popoutRating {
+  color: var(--color-text);
+}
+
+/* Adjust Close button per theme */
+#popoutClose {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark #popoutClose {
+  background-color: #ffffff;
+  color: #ff6600;
+}
+
+#popoutClose:hover {
+  opacity: 0.9;
+}
+
+</style>
